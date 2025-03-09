@@ -15,18 +15,18 @@ export class AuthGuard {
     if (!token) {
       this.router.navigate([loginUrl]);
       return true;
-    } else {
-      const decodedToken: IToken = this.userLocalService.decodeToken(token);
-      const actualDatetime: number = Math.floor(Date.now() / 1000);
-      this.userLocalService.token = token;
-
-      if (decodedToken.exp <= actualDatetime) {
-        this.userLocalService.removeToken();
-        this.router.navigate([loginUrl]);
-        return false;
-      }
-
-      return true;
     }
+
+    const decodedToken: IToken = this.userLocalService.decodeToken(token);
+    const actualDatetime: number = Math.floor(Date.now() / 1000);
+    this.userLocalService.token = token;
+
+    if (decodedToken.exp <= actualDatetime) {
+      this.userLocalService.logout();
+      this.router.navigate([loginUrl]);
+      return false;
+    }
+
+    return true;
   }
 }
