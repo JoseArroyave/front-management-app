@@ -86,6 +86,14 @@
             "styles": ["src/styles.scss"],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "repo": "https://github.com/JoseArroyave/front-management-app",
+            "branch": "imagine",
+            "baseHref": "/imagine/"
+          }
         }
       }
     }
