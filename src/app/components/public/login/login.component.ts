@@ -35,7 +35,7 @@ export class LoginComponent {
       next: async response => {
         this.toast.closeModalLoading();
         this.userLocalService.saveToken(response.message);
-        this.router.navigate(["/pages/management"]);
+        this.router.navigate(["/pages/tasks"]);
       },
     });
   }
