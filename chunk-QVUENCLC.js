@@ -1,0 +1,1 @@
+import{P as o,ba as i,t as n,ya as a}from"./chunk-6PQSHQPV.js";var c=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=n({type:t,selectors:[["management-login"]],standalone:!0,features:[i],decls:1,vars:0,template:function(e,l){e&1&&o(0,"router-outlet")},dependencies:[a],encapsulation:2})};export{c as PublicComponent};
