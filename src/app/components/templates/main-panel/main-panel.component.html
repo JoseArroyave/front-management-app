@@ -1,0 +1,18 @@
+<div class="panel-container">
+  <nav class="navbar navbar-light bg-light px-3 d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <img [src]="storageFront + '/logo.png'" alt="Logo" class="logo me-2" style="max-height: 50px" />
+      <span>Bienvenido</span>
+    </div>
+    <button
+      class="btn btn-outline-danger"
+      (click)="logout()"
+      data-bs-toggle="tooltip"
+      data-bs-placement="bottom"
+      title="Cerrar sesión">
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </nav>
+</div>
+
+<router-outlet></router-outlet>
