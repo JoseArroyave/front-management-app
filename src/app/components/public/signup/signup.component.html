@@ -2,7 +2,7 @@
   <div class="card shadow p-4" style="width: 400px">
     <h3 class="text-center mb-4">Registro</h3>
 
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signupForm" (ngSubmit)="createUser()">
       <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="name" formControlName="name" placeholder="Ingresa tu nombre" />
@@ -28,7 +28,7 @@
           formControlName="password"
           placeholder="Ingresa tu contraseña" />
         @if(signupForm.get('password')?.invalid && signupForm.get('password')?.touched){
-        <small class="text-danger"> Mínimo 6 caracteres </small>
+        <small class="text-danger"> Mínimo 8 caracteres </small>
         }
       </div>
 

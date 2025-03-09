@@ -7,7 +7,7 @@ import {
   Validators,
   FormGroup,
 } from "@angular/forms";
-import { PublicService } from "@services/web-services/public.service";
+import { UsersService } from "@services/web-services/users.service";
 import { SwalPopupService } from "@services/swal-popup.service";
 import { Router, RouterLink } from "@angular/router";
 import { Component, inject } from "@angular/core";
@@ -21,13 +21,13 @@ import { CommonModule } from "@angular/common";
   styleUrls: ["./signup.component.scss"],
 })
 export class SignupComponent {
-  private publicService = inject(PublicService);
+  private usersService = inject(UsersService);
   private toast = inject(SwalPopupService);
   private router = inject(Router);
 
   public signupForm: FormGroup = new FormGroup(
     {
-      password: new FormControl("", [Validators.required, Validators.minLength(6)]),
+      password: new FormControl("", [Validators.required, Validators.minLength(8)]),
       name: new FormControl("", [Validators.required, Validators.minLength(3)]),
       email: new FormControl("", [Validators.required, Validators.email]),
       confirmPassword: new FormControl("", [Validators.required]),
@@ -43,20 +43,17 @@ export class SignupComponent {
     };
   }
 
-  onSubmit() {
+  createUser() {
     if (this.signupForm.invalid) {
       this.toast.setToastPopup("Por favor, revisa el formulario y corrige los errores", "error");
       return;
     }
 
     this.toast.showModalLoading();
-    this.publicService.signUp(this.signupForm.value).subscribe({
+    this.usersService.createUser(this.signupForm.value).subscribe({
       next: async () => {
         this.toast.setToastPopup("Usuario creado exitosamente", "success");
         this.router.navigate(["/public/login"]);
-      },
-      error: async () => {
-        this.toast.setToastPopup("Ha ocurrido un error, contacta un asesor", "error");
       },
     });
   }
