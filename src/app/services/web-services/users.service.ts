@@ -6,10 +6,10 @@ import { Injectable, inject } from "@angular/core";
 @Injectable({
   providedIn: "root",
 })
-export class PublicService {
+export class UsersService {
   private http = inject(HttpClient);
 
-  private readonly url = `${environment.apiUrl}login/`;
+  private readonly url = `${environment.apiUrl}users/`;
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -17,12 +17,8 @@ export class PublicService {
     });
   }
 
-  public login = (params: { username: string; password: string }) => {
-    return this.http.post<IResponse<IResponseLogin>>(`${this.url}login`, params);
-  };
-
-  public signUp = (params: { username: string; password: string }) => {
-    return this.http.post<IResponse<string>>(`${this.url}signUp`, params, {
+  public createUser = (params: { email: string; password: string }) => {
+    return this.http.post<IResponse<string>>(`${this.url}createUser`, params, {
       headers: this.getHeaders(),
     });
   };
