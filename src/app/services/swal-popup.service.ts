@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { environment } from "src/environments/environment";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import { Injectable, OnInit } from "@angular/core";

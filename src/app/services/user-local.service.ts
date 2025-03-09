@@ -17,7 +17,7 @@ export class UserLocalService {
 
   decodeToken = (token: string) => new JwtHelperService().decodeToken(token);
 
-  removeToken = async () => {
+  logout = async () => {
     await this.cleanDataToken();
     this.router.navigate(["/public/login"]);
   };
