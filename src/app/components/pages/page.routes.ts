@@ -4,9 +4,9 @@ import { Routes } from "@angular/router";
 export const PageRoutes: Routes = [
   {
     title: "Gestor de tareas",
-    path: "management",
+    path: "tasks",
     canActivate: [AuthGuard],
-    loadComponent: () => import("@components/pages/management/management.component").then(c => c.ManagementComponent),
+    loadComponent: () => import("@components/pages/tasks/tasks.component").then(c => c.TasksComponent),
   },
   { path: "**", redirectTo: "public/not-found" },
 ];
