@@ -26,18 +26,14 @@ export class SwalPopupService implements OnInit {
 
   public showModalConfirm = (
     title = "",
-    text = "",
     callback: (response: { isConfirmed: boolean }) => any,
     onlyAccept = false,
     confirmButtonColor = "#5370a8"
   ) => {
     Swal.fire({
-      html: `<div id="lottie-container-confirm" style="width: 150px; height: 150px; margin: 0 auto;"></div>
+      html: `
       <p style="text-align: center;font-size: 1.25rem;line-height: 1.75rem;font-weight: 500;">
       ${title}
-      </p>
-      <p style="margin-top: 1rem;text-align: center;font-size: 1rem;line-height: 1.5rem;font-weight: 400;">
-      ${text}
       </p>
       `,
       confirmButtonColor: confirmButtonColor,
@@ -46,6 +42,7 @@ export class SwalPopupService implements OnInit {
       confirmButtonText: "Sí",
       cancelButtonText: "No",
       background: "#f1f1f1",
+      icon: "question",
       color: "#000000",
     }).then(response => callback(response));
   };
