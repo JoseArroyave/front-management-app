@@ -1,0 +1,70 @@
+<form [formGroup]="taskForm">
+  <!-- Título -->
+  <div class="mb-3">
+    <label for="title" class="form-label">Título</label>
+    <input type="text" id="title" class="form-control" formControlName="title" placeholder="Ingresa un título" />
+    <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="text-danger">
+      El título es obligatorio (mínimo 3 caracteres).
+    </div>
+  </div>
+
+  <!-- Descripción -->
+  <div class="mb-3">
+    <label for="description" class="form-label">Descripción</label>
+    <textarea
+      id="description"
+      class="form-control"
+      formControlName="description"
+      rows="3"
+      placeholder="Ingresa una descripción (opcional)"></textarea>
+  </div>
+
+  <!-- Estado -->
+  <div class="mb-3">
+    <label class="form-label">Estado</label>
+    <select class="form-select" formControlName="status">
+      <option value="pending">Pendiente</option>
+      <option value="completed">Completada</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Compartir con usuarios</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar usuarios por nombre o correo..."
+      formControlName="searchTerm"
+      (input)="searchUsers()" />
+  </div>
+
+  <!-- Lista de usuarios encontrados -->
+  <ul class="list-group mb-3" *ngIf="users.length > 0">
+    <li class="list-group-item" *ngFor="let user of users">
+      {{ user.name }} ({{ user.email }})
+      <button
+        class="btn btn-sm btn-primary float-end"
+        (click)="toggleUserSelection(user)"
+        [ngClass]="{ 'btn-danger': isSelected(user), 'btn-primary': !isSelected(user) }">
+        {{ isSelected(user) ? "Quitar" : "Agregar" }}
+      </button>
+    </li>
+  </ul>
+
+  <!-- Usuarios seleccionados -->
+  <div *ngIf="selectedUsers.length > 0">
+    <strong>Usuarios seleccionados:</strong>
+    <ul>
+      <li *ngFor="let user of selectedUsers">
+        <span (click)="removeUser(user)" style="cursor: pointer">❌</span> {{ user.name }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Botón de enviar -->
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid" (click)="saveTask()">
+      @if(task){Editar}@else {Crear} tarea
+    </button>
+  </div>
+</form>
