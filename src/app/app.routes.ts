@@ -7,10 +7,9 @@ export const routes: Routes = [
     loadChildren: () => import("@components/public/public.routes").then(c => c.PublicRoutes),
   },
   {
-    path: "management",
-    loadComponent: () => import("@components/pages/management.component").then(c => c.ManagementComponent),
-    loadChildren: () => import("@components/pages/management.routes").then(c => c.ManagementRoutes),
+    path: "pages",
+    loadComponent: () => import("@components/pages/page.component").then(c => c.PageComponent),
+    loadChildren: () => import("@components/pages/page.routes").then(c => c.PageRoutes),
   },
-  { path: "", redirectTo: "public/login", pathMatch: "full" },
   { path: "**", redirectTo: "public/not-found" },
 ];
