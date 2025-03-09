@@ -1,1 +1,95 @@
-/* You can add global styles to this file, and also import other style files */
+::-webkit-scrollbar {
+  @apply bg-transparent w-[0.375rem] h-[0.375rem];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-xl w-[0.375rem] h-[0.375rem] cursor-pointer bg-[var(--primary-color)];
+}
+
+.scroll-box {
+  @apply overflow-x-hidden scroll-smooth;
+
+  &::-webkit-scrollbar {
+    @apply bg-transparent w-[0.375rem] h-[0.375rem];
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply rounded-xl w-[0.375rem] h-[0.375rem] cursor-pointer bg-[var(--primary-color)];
+  }
+}
+
+/* 🔹 Evita scroll en el modal */
+.no-scroll-modal {
+  overflow: hidden !important; /* Evita cualquier tipo de scroll */
+  padding: 0 !important; /* Elimina espacios extra */
+  max-width: 300px; /* Ajusta el ancho para que no haya desbordamiento */
+}
+
+/* 🔹 Contenedor del spinner sin scroll */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Asegura que no haya barra de desplazamiento */
+}
+
+/* 🔹 Spinner animado */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* 🔹 Animación del spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.swal2-container {
+  z-index: 9999 !important;
+
+  .swal2-html-container {
+    margin: 0 !important;
+  }
+
+  &.swal2-backdrop-show {
+    background: rgba(15, 16, 19, 0.75) !important;
+  }
+
+  &.swal2-bottom-end {
+    background: transparent !important;
+  }
+}
+
+.swal2-icon {
+  &.swal2-icon-show {
+    margin-bottom: 0 !important;
+    border: none !important;
+  }
+}
+
+.swal2-popup {
+  &.swal2-modal {
+    @apply bg-[var(--surface-card)] rounded-xl;
+    border: 0.33rem !important;
+  }
+
+  &.swal2-toast {
+    box-shadow: none !important;
+
+    & .swal2-title {
+      @apply text-black;
+      font-size: 0.85rem !important;
+    }
+  }
+}

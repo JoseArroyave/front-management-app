@@ -1,0 +1,54 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow p-4" style="width: 400px">
+    <h3 class="text-center mb-4">Registro</h3>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="name" formControlName="name" placeholder="Ingresa tu nombre" />
+        @if(signupForm.get('name')?.invalid && signupForm.get('name')?.touched){
+        <small class="text-danger"> Nombre obligatorio (mínimo 3 caracteres) </small>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <input type="email" class="form-control" id="email" formControlName="email" placeholder="Ingresa tu correo" />
+        @if(signupForm.get('email')?.invalid && signupForm.get('email')?.touched){
+        <small class="text-danger"> Correo inválido </small>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          formControlName="password"
+          placeholder="Ingresa tu contraseña" />
+        @if(signupForm.get('password')?.invalid && signupForm.get('password')?.touched){
+        <small class="text-danger"> Mínimo 6 caracteres </small>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="Confirma tu contraseña" />
+        @if (signupForm.get('password')?.value !== signupForm.get('confirmPassword')?.value &&
+        signupForm.get('confirmPassword')?.touched) {
+        <small class="text-danger"> Las contraseñas no coinciden </small>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-success w-100" [disabled]="signupForm.invalid">Registrarse</button>
+    </form>
+
+    <p class="text-center mt-3">¿Ya tienes cuenta? <a routerLink="/public/login">Inicia sesión</a></p>
+  </div>
+</div>
