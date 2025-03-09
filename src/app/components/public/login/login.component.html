@@ -4,15 +4,10 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="mb-3">
-        <label for="username" class="form-label">Usuario</label>
-        <input
-          type="text"
-          class="form-control"
-          id="username"
-          formControlName="username"
-          placeholder="Ingresa tu usuario" />
-        <small class="text-danger" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
-          Usuario inválido
+        <label for="email" class="form-label">Email</label>
+        <input type="text" class="form-control" id="email" formControlName="email" placeholder="Ingresa tu email" />
+        <small class="text-danger" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          Email inválido
         </small>
       </div>
 
@@ -31,10 +26,6 @@
 
       <button type="submit" class="btn btn-success w-100" [disabled]="loginForm.invalid">Ingresar</button>
     </form>
-
-    <p class="text-center my-3 mb-1">
-      <a href="#">¿Olvidaste tu contraseña?</a>
-    </p>
 
     <p class="text-center mt-1">
       ¿No tienes cuenta?

@@ -1,5 +1,5 @@
 import { ReactiveFormsModule, Validators, FormGroup, FormControl } from "@angular/forms";
-import { PublicService } from "@services/web-services/public.service";
+import { LoginService } from "@services/web-services/login.service";
 import { SwalPopupService } from "@services/swal-popup.service";
 import { UserLocalService } from "@services/user-local.service";
 import { Router, RouterLink } from "@angular/router";
@@ -15,13 +15,13 @@ import { CommonModule } from "@angular/common";
 })
 export class LoginComponent {
   private userLocalService = inject(UserLocalService);
-  private publicService = inject(PublicService);
+  private loginService = inject(LoginService);
   private toast = inject(SwalPopupService);
   private router = inject(Router);
 
   public loginForm: FormGroup = new FormGroup({
     password: new FormControl({ value: "", disabled: false }, [Validators.required, Validators.minLength(6)]),
-    username: new FormControl({ value: "", disabled: false }, [Validators.required]),
+    email: new FormControl({ value: "", disabled: false }, [Validators.email, Validators.required]),
   });
 
   login() {
@@ -31,17 +31,12 @@ export class LoginComponent {
     }
 
     this.toast.showModalLoading();
-    this.publicService.login(this.loginForm.value).subscribe({
+    this.loginService.login(this.loginForm.value).subscribe({
       next: async response => {
-        this.toast.setToastPopup("Datos correctos", "success");
+        this.toast.closeModalLoading();
         this.userLocalService.saveToken(response.message);
-        this.router.navigate(["/management/home"]);
-      },
-      error: async () => {
-        this.toast.setToastPopup("Ha ocurrido un error, contacta un asesor", "error");
+        this.router.navigate(["/pages/management"]);
       },
     });
-
-    this.toast.setToastPopup("¡Inicio de sesión exitoso!", "success");
   }
 }
