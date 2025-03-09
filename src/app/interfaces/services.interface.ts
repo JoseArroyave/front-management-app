@@ -16,8 +16,6 @@ export interface IToken {
 
 export interface IUsers {
   username: string;
-  lastName: string;
   idUser: number;
   email: string;
-  name: string;
 }
