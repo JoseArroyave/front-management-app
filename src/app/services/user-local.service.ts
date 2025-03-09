@@ -39,7 +39,7 @@ export class UserLocalService {
 
   setInfoUser(token: string) {
     const decodedToken = this.decodeToken(token);
-    this.userSubject.next(decodedToken.session);
+    this.userSubject.next(decodedToken.user);
   }
 
   getUser(): IUsers | null {
