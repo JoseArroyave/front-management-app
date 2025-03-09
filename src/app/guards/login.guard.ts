@@ -7,17 +7,17 @@ import { isPlatformBrowser } from "@angular/common";
 export class LoginGuard implements CanActivate {
   private userLocalService = inject(UserLocalService);
   private router = inject(Router);
+
   private platformId = inject(PLATFORM_ID);
 
   canActivate(): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem("accessToken");
-      if (!token) return true;
+    if (isPlatformBrowser(this.platformId)) return true;
 
-      this.userLocalService.token = token;
-      this.router.navigate(["/pages/management"]);
-      return false;
-    }
-    return true;
+    const token = localStorage.getItem("accessToken");
+    if (!token) return true;
+
+    this.userLocalService.token = token;
+    this.router.navigate(["/pages/management"]);
+    return false;
   }
 }

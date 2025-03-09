@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
+import { UserLocalService } from "@services/user-local.service";
 
 @Component({
   selector: "app-management",
