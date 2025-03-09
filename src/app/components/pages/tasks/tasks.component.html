@@ -21,9 +21,9 @@
       <thead class="table-dark">
         <tr>
           <th>#</th>
+          <th>Estado</th>
           <th>Título</th>
           <th>Descripción</th>
-          <th>Estado</th>
           <th>Completar</th>
           <th>Acciones</th>
         </tr>
@@ -31,8 +31,6 @@
       <tbody *ngIf="tasks$ | async as tasks">
         <tr *ngFor="let task of tasks; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-          <td>{{ task.title }}</td>
-          <td>{{ task.description }}</td>
           <td>
             <span
               class="badge"
@@ -40,6 +38,8 @@
               {{ task.status === "completed" ? "Completado" : "Pendiente" }}
             </span>
           </td>
+          <td>{{ task.title }}</td>
+          <td>{{ task.description }}</td>
           <td>
             <button
               class="btn btn-sm"

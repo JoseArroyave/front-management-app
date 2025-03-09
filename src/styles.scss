@@ -1,41 +1,35 @@
 ::-webkit-scrollbar {
-  @apply bg-transparent w-[0.375rem] h-[0.375rem];
+  width: 0.5rem;
+  height: 0.5rem;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply rounded-xl w-[0.375rem] h-[0.375rem] cursor-pointer bg-[var(--primary-color)];
+  background-color: #00ddb3;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .scroll-box {
-  @apply overflow-x-hidden scroll-smooth;
-
-  &::-webkit-scrollbar {
-    @apply bg-transparent w-[0.375rem] h-[0.375rem];
-  }
-
-  &::-webkit-scrollbar-thumb {
-    @apply rounded-xl w-[0.375rem] h-[0.375rem] cursor-pointer bg-[var(--primary-color)];
-  }
+  max-height: 200px;
+  overflow-y: auto;
 }
 
-/* 🔹 Evita scroll en el modal */
 .no-scroll-modal {
-  overflow: hidden !important; /* Evita cualquier tipo de scroll */
-  padding: 0 !important; /* Elimina espacios extra */
-  max-width: 300px; /* Ajusta el ancho para que no haya desbordamiento */
+  overflow: hidden !important;
+  padding: 0 !important;
+  max-width: 300px;
 }
 
-/* 🔹 Contenedor del spinner sin scroll */
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* Asegura que no haya barra de desplazamiento */
+  overflow: hidden;
 }
 
-/* 🔹 Spinner animado */
 .spinner {
   width: 50px;
   height: 50px;
@@ -45,7 +39,6 @@
   animation: spin 1s linear infinite;
 }
 
-/* 🔹 Animación del spinner */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -80,16 +73,16 @@
 
 .swal2-popup {
   &.swal2-modal {
-    @apply bg-[var(--surface-card)] rounded-xl;
     border: 0.33rem !important;
+    border-radius: 0.75rem;
   }
 
   &.swal2-toast {
     box-shadow: none !important;
 
     & .swal2-title {
-      @apply text-black;
       font-size: 0.85rem !important;
+      color: #000000;
     }
   }
 }
