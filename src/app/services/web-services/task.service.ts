@@ -1,16 +1,18 @@
 import { PaginatedTasks, Task } from "@interfaces/tasks.interface";
-import { environment } from "@environments/environment";
 import { inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { SwalPopupService } from "@services/swal-popup.service";
+import { IResponse } from "@interfaces/services.interface";
+import { environment } from "@environments/environment";
+import { isPlatformBrowser } from "@angular/common";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { isPlatformBrowser } from "@angular/common";
-import { IResponse } from "@interfaces/services.interface";
 
 @Injectable({
   providedIn: "root",
 })
 export class TaskService {
+  private toast = inject(SwalPopupService);
   private http = inject(HttpClient);
 
   private readonly url = `${environment.apiUrl}tasks/`;
@@ -45,6 +47,7 @@ export class TaskService {
       )
       .subscribe(tasks => {
         this.tasksSubject.next(tasks);
+        this.toast.closeModalLoading();
       });
   }
 

@@ -39,6 +39,7 @@ export class TasksComponent implements OnInit {
   }
 
   getTasks() {
+    this.toast.showModalLoading();
     this.taskService.getTasks(this.currentPage, this.selectedStatus);
   }
 
