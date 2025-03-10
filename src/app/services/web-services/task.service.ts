@@ -23,6 +23,9 @@ export class TaskService {
   private totalPagesSubject = new BehaviorSubject<number>(1);
   public totalPages$ = this.totalPagesSubject.asObservable();
 
+  private selectedTaskSubject = new BehaviorSubject<Task | null>(null);
+  public selectedTask$ = this.selectedTaskSubject.asObservable();
+
   private platformId = inject(PLATFORM_ID);
 
   private currentPage = 1;
@@ -75,6 +78,14 @@ export class TaskService {
           return response;
         })
       );
+  }
+
+  public setSelectedTask(task: Task | null) {
+    this.selectedTaskSubject.next(task);
+  }
+
+  public getSelectedTask(): Task | null {
+    return this.selectedTaskSubject.getValue();
   }
 
   deleteTask(task: Task): Observable<IResponse<Task>> {

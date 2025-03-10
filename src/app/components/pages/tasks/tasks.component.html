@@ -13,7 +13,13 @@
     </div>
 
     <!-- Botón para abrir el modal de creación -->
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">+ Nueva Tarea</button>
+    <button
+      (click)="taskService.setSelectedTask(null)"
+      data-bs-target="#taskModal"
+      class="btn btn-primary"
+      data-bs-toggle="modal">
+      + Nueva Tarea
+    </button>
   </div>
 
   <div class="table-responsive">
@@ -53,8 +59,8 @@
               <button
                 class="btn btn-sm btn btn-outline-warning me-2"
                 (click)="openEditModal(task)"
-                data-bs-toggle="modal"
-                data-bs-target="#editTaskModal">
+                data-bs-target="#taskModal"
+                data-bs-toggle="modal">
                 ✏️
               </button>
               <button class="btn btn-sm btn btn-outline-danger me-2" (click)="deleteTask(task)">❌</button>
@@ -81,29 +87,15 @@
   </nav>
 </div>
 
-<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true" #taskModal>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="taskModalLabel">Crear nueva tarea</h5>
+        <h5 class="modal-title" id="taskModalLabel">@if(taskService.getSelectedTask()) {Editar} @else {Crear} tarea</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <app-task-form></app-task-form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editTaskModalLabel">Editar tarea</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <app-task-form #taskFormComponent [task]="selectedTask"></app-task-form>
+        <app-task-form (closeModalTask)="closeModalTask()"></app-task-form>
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@ import { SwalPopupService } from "@services/swal-popup.service";
 import { Task } from "@interfaces/tasks.interface";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import * as bootstrap from "bootstrap";
 import { Observable } from "rxjs";
 
 @Component({
@@ -15,19 +16,16 @@ import { Observable } from "rxjs";
   styleUrl: "./tasks.component.scss",
 })
 export class TasksComponent implements OnInit {
-  @ViewChild("editTaskModal") editTaskModal!: ElementRef;
-  @ViewChild("taskFormComponent") taskFormComponent!: TaskFormComponent;
+  @ViewChild("taskModal") taskModal!: ElementRef;
 
-  private taskService = inject(TaskService);
+  public taskService = inject(TaskService);
   private toast = inject(SwalPopupService);
 
   public totalPages$: Observable<number> = this.taskService.totalPages$;
   public tasks$: Observable<Task[]> = this.taskService.tasks$;
+  public selectedStatus: string = "";
   public currentPage: number = 1;
   public pageSize: number = 10;
-
-  public selectedTask: Task | null = null;
-  public selectedStatus: string = "";
 
   ngOnInit(): void {
     this.getTasks();
@@ -49,12 +47,15 @@ export class TasksComponent implements OnInit {
   }
 
   openEditModal(task: Task) {
-    this.selectedTask = task;
+    this.taskService.setSelectedTask(task);
   }
 
-  closeModal() {
-    this.selectedTask = null;
-    this.taskFormComponent.resetForm();
+  closeModalTask() {
+    this.taskService.setSelectedTask(null);
+    if (this.taskModal) {
+      const closeButton: HTMLElement | null = this.taskModal.nativeElement.querySelector(".btn-close");
+      if (closeButton) closeButton.click();
+    }
   }
 
   deleteTask(task: Task) {

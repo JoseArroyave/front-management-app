@@ -1,4 +1,14 @@
-import { Component, inject, OnInit, Input, SimpleChanges, OnChanges, OnDestroy } from "@angular/core";
+import {
+  SimpleChanges,
+  EventEmitter,
+  Component,
+  OnChanges,
+  OnDestroy,
+  inject,
+  OnInit,
+  Input,
+  Output,
+} from "@angular/core";
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
 import { UsersService } from "@services/web-services/users.service";
 import { TaskService } from "@services/web-services/task.service";
@@ -17,16 +27,18 @@ import { Subscription } from "rxjs";
   styleUrl: "./task-form.component.scss",
 })
 export class TaskFormComponent implements OnInit, OnChanges, OnDestroy {
+  @Output() closeModalTask = new EventEmitter<void>();
+
   private userLocalService = inject(UserLocalService);
   private usersService = inject(UsersService);
   private taskService = inject(TaskService);
   private toast = inject(SwalPopupService);
 
-  @Input() task: Task | null = null;
-
+  private taskSubscription: Subscription | null = null;
   private userSubscription: Subscription | null = null;
   public currentUser: IUsers | null = null;
   public selectedUsers: any[] = [];
+  public task: Task | null = null;
   public users: any[] = [];
 
   public taskForm: FormGroup = new FormGroup({
@@ -38,6 +50,17 @@ export class TaskFormComponent implements OnInit, OnChanges, OnDestroy {
   });
 
   ngOnInit() {
+    this.taskSubscription = this.taskService.selectedTask$.subscribe(task => {
+      this.task = task;
+      if (task) {
+        this.taskForm.patchValue(task);
+        this.selectedUsers = task.owners.filter((owner: any) => owner.idUser !== this.currentUser?.idUser);
+        this.ensureCurrentUserInOwners();
+      } else {
+        this.resetForm();
+      }
+    });
+
     this.userSubscription = this.userLocalService.user$.subscribe(user => {
       this.currentUser = user;
       this.ensureCurrentUserInOwners();
@@ -112,11 +135,13 @@ export class TaskFormComponent implements OnInit, OnChanges, OnDestroy {
     if (this.task) {
       this.taskService.updateTask(this.task.id, taskData).subscribe(() => {
         this.toast.setToastPopup("Tarea actualizada correctamente.", "success");
+        this.closeModalTask.emit();
         this.resetForm();
       });
     } else {
       this.taskService.createTask(taskData).subscribe(() => {
         this.toast.setToastPopup("Tarea creada correctamente.", "success");
+        this.closeModalTask.emit();
         this.resetForm();
       });
     }
@@ -135,6 +160,7 @@ export class TaskFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.taskSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
   }
 }
