@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Input, SimpleChanges, OnChanges } from "@angular/core";
+import { Component, inject, OnInit, Input, SimpleChanges, OnChanges, OnDestroy } from "@angular/core";
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
 import { UsersService } from "@services/web-services/users.service";
 import { TaskService } from "@services/web-services/task.service";
@@ -7,6 +7,7 @@ import { SwalPopupService } from "@services/swal-popup.service";
 import { UserLocalService } from "@services/user-local.service";
 import { IUsers } from "@interfaces/services.interface";
 import { CommonModule } from "@angular/common";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-task-form",
@@ -15,7 +16,7 @@ import { CommonModule } from "@angular/common";
   templateUrl: "./task-form.component.html",
   styleUrl: "./task-form.component.scss",
 })
-export class TaskFormComponent implements OnInit, OnChanges {
+export class TaskFormComponent implements OnInit, OnChanges, OnDestroy {
   private userLocalService = inject(UserLocalService);
   private usersService = inject(UsersService);
   private taskService = inject(TaskService);
@@ -23,6 +24,7 @@ export class TaskFormComponent implements OnInit, OnChanges {
 
   @Input() task: Task | null = null;
 
+  private userSubscription: Subscription | null = null;
   public currentUser: IUsers | null = null;
   public selectedUsers: any[] = [];
   public users: any[] = [];
@@ -36,16 +38,26 @@ export class TaskFormComponent implements OnInit, OnChanges {
   });
 
   ngOnInit() {
-    this.currentUser = this.userLocalService.getUser();
-    if (this.currentUser && this.currentUser.idUser) {
-      this.taskForm.patchValue({ owners: [this.currentUser.idUser] });
-    }
+    this.userSubscription = this.userLocalService.user$.subscribe(user => {
+      this.currentUser = user;
+      this.ensureCurrentUserInOwners();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes["task"] && this.task) {
       this.taskForm.patchValue(this.task);
       this.selectedUsers = this.task.owners.filter((owner: any) => owner.idUser !== this.currentUser?.idUser);
+      this.ensureCurrentUserInOwners();
+    }
+  }
+
+  ensureCurrentUserInOwners() {
+    if (this.currentUser?.idUser) {
+      const currentOwners = this.taskForm.get("owners")?.value || [];
+      if (!currentOwners.includes(this.currentUser.idUser)) {
+        this.taskForm.patchValue({ owners: [this.currentUser.idUser, ...currentOwners] });
+      }
     }
   }
 
@@ -66,16 +78,24 @@ export class TaskFormComponent implements OnInit, OnChanges {
     } else {
       this.selectedUsers.push(user);
     }
-    this.taskForm.patchValue({ owners: this.selectedUsers.map(user => user.idUser) });
+    this.updateOwners();
+  }
+
+  removeUser(user: any) {
+    if (user.idUser !== this.currentUser?.idUser) {
+      this.selectedUsers = this.selectedUsers.filter(u => u.idUser !== user.idUser);
+    }
+    this.updateOwners();
+  }
+
+  updateOwners() {
+    if (this.currentUser?.idUser) {
+      this.taskForm.patchValue({ owners: [this.currentUser.idUser, ...this.selectedUsers.map(user => user.idUser)] });
+    }
   }
 
   isSelected(user: any): boolean {
     return this.selectedUsers.some(u => u.idUser === user.idUser);
-  }
-
-  removeUser(user: any) {
-    this.selectedUsers = this.selectedUsers.filter(u => u.idUser !== user.idUser);
-    this.taskForm.patchValue({ owners: this.selectedUsers.map(user => user.idUser) });
   }
 
   saveTask() {
@@ -112,5 +132,9 @@ export class TaskFormComponent implements OnInit, OnChanges {
       searchTerm: "",
       title: "",
     });
+  }
+
+  ngOnDestroy() {
+    this.userSubscription?.unsubscribe();
   }
 }
